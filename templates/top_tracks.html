@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/topTracks.css') }}">
+    <script src="{{ url_for('static', filename='topTracks.js') }}"></script>
+    <title>Three Div Layout with YouTube Video</title>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            {% for track in tracks %}
+                <div class="song" onclick="showSongDetails('{{ track.video_id }}', '{{ track.info }}')">
+                    <div class="rank">
+                        <p>{{ loop.index }}.</p>
+                    </div>
+                    <div class="title">
+                        <p>{{ track.track_details.name }} by {{ track.track_details.artist }}</p>
+                    </div>
+                    <div class="albumCover">
+                        <img src="{{ track.track_details.album_cover_url }}" alt="{{ track.track_details.name }}">
+                    </div>
+                </div>
+                {% if not loop.last %}
+                    <hr/>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="right">
+            <div class="top video-container">
+                <iframe src="https://www.youtube.com/embed/{{ tracks[0].video_id }}?&autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="bottom">
+                <p>{{ tracks[0].info }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

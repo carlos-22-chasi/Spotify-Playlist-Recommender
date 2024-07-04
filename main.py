@@ -116,126 +116,36 @@ def topTracks():
             'album_cover_url': track.album_cover_url
         })
 
-    build_top_tracks(tracks[:5])
-    return render_template('topTracks.html')
+    tracks_dict = get_tracks_dict(tracks[:5])
+    for track in tracks_dict:
+        print(track)
+    return render_template('top_tracks.html', tracks=tracks_dict)
 
 
-def build_top_tracks(tracks):
+def get_tracks_dict(tracks):
     ai = AI(open_ai_key)
     youtube = Youtube(youtube_key)
     songs = []
     songsInfo = []
     videos_id = []
+
+    #get the video id of the song and chatgpt information of the song
     for index, track in enumerate(tracks): 
-        songs.append(f"{track['artist']} {track['name']}")  # Assuming track is an instance of Track class
+        songs.append(f"{track['artist']} {track['name']}")  # Assuming track is an instance of Track class and used to get chatgpt and youtube information
         songsInfo.append(ai.generateSongInfo(songs[index]))
         videos_id.append(youtube.get_video_id(songs[index]))
-    print("song:")
-    print(songs)
-    print("songsInfo:")
-    print(songsInfo)
-    print("Videos_id")
-    print(videos_id)
-
-    html = build_HTML_top_track(tracks, videos_id, songsInfo)
+   
+    tracks_dict =[
+       {
+           "track_details": tracks[i],
+           "video_id": videos_id[i],
+           "info": songsInfo[i]
+       }
+       for i in range(len(tracks))
+    ]
     
-    # Save the rendered HTML to a file (optional)
-    with open("templates/topTracks.html", "w") as file:
-        file.write(html)
-
-
-def build_HTML_top_track(track,video_id,songInfo):
-    html_template = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel = "stylesheet" href = "../static/css/topTracks.css">
-        <script src = "../static/topTracks.js"></script>
-        <title>Three Div Layout with YouTube Video</title>
-    </head>
-    <body>
-        <div class="container">
-            <div class="left">
-                <div class = song>
-                    <div class = "rank">
-                        <p>1.</p>
-                    </div>
-                    <div class = "title">
-                         <p>{{ track[0].name }} by {{ track[0].artist }}</p>
-                    </div>
-                    <div class = albumCover>
-                         <img src="{{ track[0].album_cover_url }}" alt="{{ track[0].name }}">
-                    </div>
-                </div>
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////
-                <div class="song" onclick="showSongDetails('{{ video_id[1] }}', '{{ songInfo[1] }}')">
-                    <div class = "rank">
-                        <p>2.</p>
-                    </div>
-                    <div class = "title">
-                         <p>{{ track[1].name }} by {{ track[1].artist }}</p>
-                    </div>
-                    <div class = albumCover>
-                         <img src="{{ track[1].album_cover_url }}" alt="{{ track[1].name }}">
-                    </div>
-                </div>
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////
-                <div class = song>
-                    <div class = "rank">
-                        <p>3.</p>
-                    </div>
-                    <div class = "title">
-                         <p>{{ track[2].name }} by {{ track[2].artist }}</p>
-                    </div>
-                    <div class = albumCover>
-                         <img src="{{ track[2].album_cover_url }}" alt="{{ track[2].name }}">
-                    </div>
-                </div>
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////
-                <div class = song>
-                    <div class = "rank">
-                        <p>4.</p>
-                    </div>
-                    <div class = "title">
-                         <p>{{ track[3].name }} by {{ track[3].artist }}</p>
-                    </div>
-                    <div class = albumCover>
-                         <img src="{{ track[3].album_cover_url }}" alt="{{ track[3].name }}">
-                    </div>
-                </div>
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////
-                <div class = song>
-                    <div class = "rank">
-                        <p>5.</p>
-                    </div>
-                    <div class = "title">
-                         <p>{{ track[4].name }} by {{ track[4].artist }}</p>
-                    </div>
-                    <div class = albumCover>
-                         <img src="{{ track[4].album_cover_url }}" alt="{{ track[4].name }}">
-                    </div>
-                </div>
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////
-            </div>
-            <div class="right">
-                <div class="top video-container">
-                    <iframe src="https://www.youtube.com/embed/{{ video_id[0] }}?&autoplay=1&mute=1"  frameborder="0" allowfullscreen></iframe>
-                </div>
-                <div class="bottom">
-                    <p>{{songInfo[0]}}</p>
-                    
-                    
-                </div>
-            </div>
-        </div>
-    </body>
-    </html>
-    """
-    template = Template(html_template)
-    rendered_html = template.render(track = track, video_id = video_id, songInfo = songInfo)
-    return rendered_html    
+    #returns a list of dictionaries which contains the information for each track
+    return tracks_dict
 
 @app.route('/refresh_token')
 def refresh_token():
