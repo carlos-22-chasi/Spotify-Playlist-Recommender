@@ -116,9 +116,7 @@ def topTracks():
             'album_cover_url': track.album_cover_url
         })
 
-    tracks_dict = get_tracks_dict(tracks[:5])
-    print(tracks_dict)
-    
+    tracks_dict = get_tracks_dict(tracks)
     return render_template('top_tracks.html', tracks=tracks_dict)
 
 
@@ -134,7 +132,7 @@ def get_tracks_dict(tracks):
         songs.append(f"{track['artist']} {track['name']}")  # Assuming track is an instance of Track class and used to get chatgpt and youtube information
         
         info = ai.generateSongInfo(songs[index])
-        info = info.replace('"', '').replace("'", "")
+        info = info.replace('"', '').replace("'", "").replace(":","")
         songsInfo.append(info)
 
         videos_id.append(youtube.get_video_id(songs[index]))

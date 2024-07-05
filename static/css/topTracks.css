@@ -11,9 +11,10 @@ body {
   flex: 1;
   background-color: black;
   display: flex;
-  align-items: column;
-  justify-content: center;
   flex-direction: column;
+  overflow-y: auto;
+  overflow: auto;
+  align-items: center;
 }
 .right {
   flex: 1;
@@ -50,10 +51,24 @@ body {
   display: flex;
   background-color: rgb(255, 255, 255);
   height: 15%;
-  width: 100%;
+  width: 95%;
   padding: 5px;
   border-radius: 5px;
+
 }
+.song:hover {
+  background-color: #2ded70;
+  cursor: pointer;
+  transform: scale(1.03);
+}
+
+.song:hover .rank p,
+.song:hover .title p{
+    transform: scale(1.1);
+    font-weight: bold;
+    color: #2ded70;
+}
+
 .rank{
   color: white;
   text-align: center;
