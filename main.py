@@ -118,7 +118,10 @@ def topTracks():
     for index, track in enumerate(recommended_tracks):
         print(f"{index+1}- {track}")
 
-    return render_template('top_tracks.html', top_tracks=top_tracks, playlist_tracks = recommended_tracks)
+    extra = get_track_information(recommended_tracks[0])
+
+
+    return render_template('top_tracks.html', top_tracks=top_tracks, playlist_tracks = recommended_tracks, extra = extra)
 
 '''////////////////////////////////////////////////////////////////////////////////////////////////////////////////////'''
 def get_track_information(track):
@@ -126,12 +129,11 @@ def get_track_information(track):
     youtube = Youtube(youtube_key)
 
     #get the video id of the song and chatgpt information of the song
-    song = f"{track['artist']} {track['name']}" # Assuming track is an instance of Track class and used to get chatgpt and youtube information
+    song = f"{track.artist} {track.name}" # Assuming track is an instance of Track class and used to get chatgpt and youtube information
     info = ai.generateSongInfo(song)
     info = info.replace('"', '').replace("'", "").replace(":","") #removes certain characters 
     video_id = youtube.get_video_id(song)
    
-    #could create a database and add this information
     track_details =[
        {
            "video_id": video_id,
@@ -143,22 +145,22 @@ def get_track_information(track):
     return track_details
 '''////////////////////////////////////////////////////////////////////////////////////////////////////////////////////'''
 
-@app.route('/create_playlist', methods=['POST'])
-def create_playlist():
-    data = request.json
-    name = data.get('name')
+# @app.route('/create_playlist', methods=['POST'])
+# def create_playlist():
+#     data = request.json
+#     name = data.get('name')
     
-    if not name:
-        return jsonify({'success': False, 'error': 'No playlist name provided'}), 400
+#     if not name:
+#         return jsonify({'success': False, 'error': 'No playlist name provided'}), 400
 
-    try:
-        playlist = spotify_client.create_playlist(name)
-        # Assuming you have a function to get the tracks
-        tracks = get_tracks_somehow()
-        response = spotify_client.populate_playlist(playlist, tracks)
-        return jsonify({'success': True, 'response': response})
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+#     try:
+#         playlist = spotify_client.create_playlist(name)
+#         # Assuming you have a function to get the tracks
+#         tracks = get_tracks_somehow()
+#         response = spotify_client.populate_playlist(playlist, tracks)
+#         return jsonify({'success': True, 'response': response})
+#     except Exception as e:
+#         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/refresh_token')
 def refresh_token():
