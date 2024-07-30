@@ -105,50 +105,60 @@ def topTracks():
         return redirect('/refresh_token')
     
     spotify_client = SpotifyClient(session["access_token"], session['user_id'])
-    results = spotify_client.get_top_tracks()
+    top_tracks = spotify_client.get_top_tracks()
 
-    tracks = []
-    for track in results:
-        tracks.append({
-            'name': track.name,
-            'artist': track.artist,
-            'id': track.id,
-            'album_cover_url': track.album_cover_url
-        })
+    print("main.py: top 5 tracks:")
+    for index, track in enumerate(top_tracks):
+        print(f"{index+1}- {track}")
 
-    tracks_dict = get_tracks_dict(tracks)
-    return render_template('top_tracks.html', tracks=tracks_dict)
+   
+    # get recommended tracks based off user's top tracks
+    recommended_tracks = spotify_client.get_track_recommendations(top_tracks)
+    print("main.py: playlist songs:")
+    for index, track in enumerate(recommended_tracks):
+        print(f"{index+1}- {track}")
 
+    return render_template('top_tracks.html', top_tracks=top_tracks, playlist_tracks = recommended_tracks)
 
-def get_tracks_dict(tracks):
+'''////////////////////////////////////////////////////////////////////////////////////////////////////////////////////'''
+def get_track_information(track):
     ai = AI(open_ai_key)
     youtube = Youtube(youtube_key)
-    songs = []
-    songsInfo = []
-    videos_id = []
 
     #get the video id of the song and chatgpt information of the song
-    for index, track in enumerate(tracks): 
-        songs.append(f"{track['artist']} {track['name']}")  # Assuming track is an instance of Track class and used to get chatgpt and youtube information
-        
-        info = ai.generateSongInfo(songs[index])
-        info = info.replace('"', '').replace("'", "").replace(":","")
-        songsInfo.append(info)
-
-        videos_id.append(youtube.get_video_id(songs[index]))
+    song = f"{track['artist']} {track['name']}" # Assuming track is an instance of Track class and used to get chatgpt and youtube information
+    info = ai.generateSongInfo(song)
+    info = info.replace('"', '').replace("'", "").replace(":","") #removes certain characters 
+    video_id = youtube.get_video_id(song)
    
     #could create a database and add this information
-    tracks_dict =[
+    track_details =[
        {
-           "track_details": tracks[i],
-           "video_id": videos_id[i],
-           "info": songsInfo[i]
+           "video_id": video_id,
+           "info": info
        }
-       for i in range(len(tracks))
     ]
     
-    #returns a list of dictionaries which contains the information for each track
-    return tracks_dict
+    #returns details about track in question
+    return track_details
+'''////////////////////////////////////////////////////////////////////////////////////////////////////////////////////'''
+
+@app.route('/create_playlist', methods=['POST'])
+def create_playlist():
+    data = request.json
+    name = data.get('name')
+    
+    if not name:
+        return jsonify({'success': False, 'error': 'No playlist name provided'}), 400
+
+    try:
+        playlist = spotify_client.create_playlist(name)
+        # Assuming you have a function to get the tracks
+        tracks = get_tracks_somehow()
+        response = spotify_client.populate_playlist(playlist, tracks)
+        return jsonify({'success': True, 'response': response})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/refresh_token')
 def refresh_token():

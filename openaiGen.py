@@ -9,7 +9,7 @@ class AI:
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "Song with details about artist and song"},
-                {"role": "user", "content": f"Tell me about {song}. Please return response without the follwoing characters: '' or """}
+                {"role": "user", "content": f"Tell me about {song}."}
             ]
         )
         return completion.choices[0].message.content
