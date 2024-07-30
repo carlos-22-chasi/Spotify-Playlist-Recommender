@@ -10,29 +10,55 @@
 <body>
     <div class="container">
         <div class="left">
-            {% for track in tracks %}
-                <div class="song" onclick="showSongDetails('{{ track.video_id }}', '{{ track.info }}')">
-                    <div class="rank">
-                        <p>{{ loop.index }}.</p>
+            <p>Your Top 5 Songs</p>
+            <div class="top-tracks">
+                {% for track in top_tracks %}
+                    <div class="song" onclick="showSongDetails('{{ track.name }}', '{{ track.artist }}')">
+                        <div class="rank">
+                            <p>{{ loop.index }}.</p>
+                        </div>
+                        <div class="title">
+                            <p>{{ track.name }} by {{ track.artist }}</p>
+                        </div>
+                        <div class="albumCover">
+                            <img src="{{ track.album_cover_url }}" alt="{{ track.name }}">
+                        </div>
                     </div>
-                    <div class="title">
-                        <p>{{ track.track_details.name }} by {{ track.track_details.artist }}</p>
+                    {% if not loop.last %}
+                        <br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <p>Created Suggested Playlist</p>
+            <div class="new-playlist-songs">
+                {% for track in playlist_tracks %}
+                    <div class="song" onclick="showSongDetails('{{ track.name }}', '{{ track.artist }}')">
+                        <div class="rank">
+                            <p>{{ loop.index }}.</p>
+                        </div>
+                        <div class="title">
+                            <p>{{ track.name }} by {{ track.artist }}</p>
+                        </div>
+                        <div class="albumCover">
+                            <img src="{{ track.album_cover_url }}" alt="{{ track.name }}">
+                        </div>
                     </div>
-                    <div class="albumCover">
-                        <img src="{{ track.track_details.album_cover_url }}" alt="{{ track.track_details.name }}">
-                    </div>
-                </div>
-                {% if not loop.last %}
-                    <hr/>
-                {% endif %}
-            {% endfor %}
+                    {% if not loop.last %}
+                        <br>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
         <div class="right">
-            <div class="top video-container">
-                <iframe src="https://www.youtube.com/embed/{{ tracks[0].video_id }}?&autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/{{ top_tracks[0].video_id }}?&autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
             </div>
-            <div class="bottom">
-                <p>{{ tracks[0].info }}</p>
+            <div class="information">
+                <p>{{ top_tracks[0].info }}</p>
+            </div>
+            <div class="add-playlist">
+                <p>Would you like to add the playlist to your account?</p>
+                <button onclick="showPopup()">Add Playlist</button>
             </div>
         </div>
     </div>
