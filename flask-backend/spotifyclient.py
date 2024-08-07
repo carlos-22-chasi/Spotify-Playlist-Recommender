@@ -67,6 +67,8 @@ class SpotifyClient:
         Playlist: A Playlist object representing the created playlist.
     '''
     def create_playlist(self, name):
+        print("in create playlist")
+        
         data = json.dumps({
             "name": name,
             "description": "Recommended songs",
@@ -91,7 +93,20 @@ class SpotifyClient:
         dict: The response JSON from the Spotify API.
     '''
     def populate_playlist(self, playlist, tracks):
-        track_uris = [track.create_spotify_uri() for track in tracks]
+        print("in populate playlist")
+        def convert_to_track(track):
+            if isinstance(track, dict):
+                # Assuming the dictionary contains 'name' and 'artist' keys
+                return Track(track['name'], track["id"], track['artist'], track['album_cover_url'])
+            elif isinstance(track, Track):
+                return track
+            else:
+                raise TypeError("Invalid track type")
+
+        # Convert all tracks to Track objects
+        track_objects = [convert_to_track(track) for track in tracks]
+
+        track_uris = [track.create_spotify_uri() for track in track_objects]
         data = json.dumps(track_uris)
         url = f"https://api.spotify.com/v1/playlists/{playlist.id}/tracks"
         response = self._place_post_api_request(url, data)

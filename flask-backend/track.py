@@ -10,6 +10,7 @@ class Track:
     Methods:
         __init__ -  initiallizes all of the intance variables
         create_spotify_uri - composes spotify uri to communicate with spotify web API
+        to_dict - converts the class information into dictionary version
         __str__ - returns a string that contains the name and artist of a track 
     '''
 
@@ -21,6 +22,13 @@ class Track:
 
     def create_spotify_uri(self):
         return f"spotify:track:{self.id}"
+    
+    def to_dict(self):
+        return {"name": self.name,
+            "id": self.id,
+            "artist": self.artist,
+            "album_cover_url": self.album_cover_url}
+    
     
     def __str__(self):
         return f"{self.name} by {self.artist}"
