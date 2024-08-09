@@ -36,7 +36,7 @@ const BuildPlaylist = () => {
       console.log("song was cached")
       return;
     }
-    
+
     try {
       //fetch song details from the backend
       const response = await fetch('http://localhost:5000/getInfo', {
@@ -97,15 +97,15 @@ const BuildPlaylist = () => {
   return (
     <div className="container">
       <div className="left">
-        <p>Your Top 5 Songs</p>
+        <p className="section-title">Your Top 5 Songs</p>
         <div className="top-tracks">
           {topTracks.map((track, index) => (
             <div className="song" key={index} onClick={() => showSongDetails(track.name, track.artist)}>
               <div className="rank">
-                <p>{index + 1}.</p>
+                <p className='song-text'>{index + 1}.</p>
               </div>
               <div className="title">
-                <p>{track.name} by {track.artist}</p>
+                <p className='song-text'>{track.name} by {track.artist}</p>
               </div>
               <div className="albumCover">
                 <img src={track.album_cover_url} alt={track.name} />
@@ -113,15 +113,15 @@ const BuildPlaylist = () => {
             </div>
           ))}
         </div>
-        <p>Created Suggested Playlist</p>
+        <p class="section-title">Created Suggested Playlist</p>
         <div className="new-playlist-songs">
           {playlistTracks.map((track, index) => (
             <div className="song" key={index} onClick={() => showSongDetails(track.name, track.artist)}>
               <div className="rank">
-                <p>{index + 1}.</p>
+                <p className='song-text'>{index + 1}.</p>
               </div>
               <div className="title">
-                <p>{track.name} by {track.artist}</p>
+                <p className='song-text'>{track.name} by {track.artist}</p>
               </div>
               <div className="albumCover">
                 <img src={track.album_cover_url} alt={track.name} />
