@@ -24,6 +24,19 @@ const BuildPlaylist = () => {
 
   //function to show song details when a song is clicked
   const showSongDetails = async (name, artist) => {
+    //create a unique key based on song details
+    const songKey = `${name} by ${artist}`; 
+
+    // check local storage for cached song details
+    const cachedData = localStorage.getItem(songKey);
+    
+    if (cachedData) {
+      // If cached data exists, parse and use it
+      setCurrentTrackDetails(JSON.parse(cachedData));
+      console.log("song was cached")
+      return;
+    }
+    
     try {
       //fetch song details from the backend
       const response = await fetch('http://localhost:5000/getInfo', {
@@ -39,6 +52,7 @@ const BuildPlaylist = () => {
       //update the state with fetched data
       const trackDetails = await response.json();
       setCurrentTrackDetails(trackDetails)
+      localStorage.setItem(songKey, JSON.stringify(trackDetails));
     } catch (error) {
       console.error('Error fetching track details:', error);
     }
