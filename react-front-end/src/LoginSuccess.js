@@ -3,13 +3,29 @@ import './static/css/LoginSuccess.css'; // Make sure to create this CSS file
 
 const LoginSuccessPage = () => {
   useEffect(() => {
-    // Redirect to the backend login route after 10 seconds
-    const timer = setTimeout(() => {
-      window.location.href = '/build_playlist';
-    }, 3000);
+    const fetchData = async () => {
+      try {
+        //fetch top tracks and playlist tracks from the backend
+        const response = await fetch('http://localhost:5000/topTracks', {
+          credentials: 'include'
+        }); 
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
 
-    // Clean up timer if the component is unmounted
-    return () => clearTimeout(timer);
+       //store data in local storage
+       localStorage.setItem('topTracks', JSON.stringify(data.topTracks));
+       localStorage.setItem('playlistTracks', JSON.stringify(data.playlistTracks));
+       localStorage.setItem('extra', JSON.stringify(data.extra));
+
+        //redirect after fetching data
+        window.location.href = '/build_playlist';
+      
+      } catch (error) {
+        console.error('Fetch error:', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (

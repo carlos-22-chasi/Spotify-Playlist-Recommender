@@ -11,25 +11,15 @@ const BuildPlaylist = () => {
   const [isPlaylistFormVisible, setIsPlaylistFormVisible] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        //fetch top tracks and playlist tracks from the backend
-        const response = await fetch('http://localhost:5000/topTracks', {
-          credentials: 'include'
-        }); 
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.json();
+    //retrieve data from local storage
+    const storedTopTracks = JSON.parse(localStorage.getItem('topTracks'));
+    const storedPlaylistTracks = JSON.parse(localStorage.getItem('playlistTracks'));
+    const storedExtra = JSON.parse(localStorage.getItem('extra'));
 
-        //update state with fetched data
-        setTopTracks(data.topTracks);
-        setPlaylistTracks(data.playlistTracks);
-        setCurrentTrackDetails(data.extra);
-      } catch (error) {
-        console.error('Fetch error:', error);
-      }
-    };
-
-    fetchData();
+    //set data 
+    if (storedTopTracks) setTopTracks(storedTopTracks);
+    if (storedPlaylistTracks) setPlaylistTracks(storedPlaylistTracks);
+    if (storedExtra) setCurrentTrackDetails(storedExtra);
   }, []);
 
   //function to show song details when a song is clicked
