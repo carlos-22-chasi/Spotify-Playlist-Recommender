@@ -3,7 +3,7 @@ import './static/css/LoginSuccess.css'; // Make sure to create this CSS file
 
 const LoginSuccessPage = () => {
   useEffect(() => {
-    // Redirect to the backend login route after 3 seconds
+    // Redirect to the backend login route after 10 seconds
     const timer = setTimeout(() => {
       window.location.href = '/build_playlist';
     }, 3000);

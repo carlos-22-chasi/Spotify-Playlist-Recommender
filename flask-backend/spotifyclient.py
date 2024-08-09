@@ -17,11 +17,10 @@ class SpotifyClient:
        self.user_id = user_id
 
     """
-    Gets the top tracks of the user.
-
+    Purpose:
+        Gets the top tracks of the user.
     Args:
         limit (int): The maximum number of items that should be contained in the response. Defaults to 5.
-
     Returns:
         list: A list of Track objects containing the top tracks of the user.
     """
@@ -40,7 +39,8 @@ class SpotifyClient:
         return tracks
     
     '''
-    Fetches track recommendations based on a list of seed tracks.
+    Purpose: 
+        Fetches track recommendations based on a list of seed tracks.
     Args:
         seed_tracks (list): List of Track objects to be used as seeds for recommendations.
         limit (int): Number of recommendations to fetch. Defaults to 25. Range is 0 - 100.
@@ -60,7 +60,8 @@ class SpotifyClient:
         return tracks
      
     '''
-    Creates a new playlist with the specified name.
+    Purpose: 
+        Creates a new playlist with the specified name.
     Args:
         name (str): The name of the playlist to be created.
     Returns:
@@ -85,7 +86,8 @@ class SpotifyClient:
         return playlist
     
     '''
-    Adds tracks to the specified playlist.
+    Purpose: 
+        Adds tracks to the specified playlist.
     Args:
         playlist (Playlist): The Playlist object to which tracks will be added.
         tracks (list): List of Track objects to be added to the playlist.
@@ -94,6 +96,7 @@ class SpotifyClient:
     '''
     def populate_playlist(self, playlist, tracks):
         print("in populate playlist")
+        #helper function to ensure tracks are of type Track object
         def convert_to_track(track):
             if isinstance(track, dict):
                 # Assuming the dictionary contains 'name' and 'artist' keys
@@ -114,7 +117,8 @@ class SpotifyClient:
         return response_json
     
     '''
-    Makes a GET request to the specified URL with the appropriate headers.
+    Purpose: 
+        Makes a GET request to the specified URL with the appropriate headers.
     Args:
         url (str): The URL to make the GET request to.
     Returns:
@@ -132,7 +136,8 @@ class SpotifyClient:
     
      
     '''
-    Makes a POST request to the specified URL with the appropriate headers and data.
+    Purpose: 
+         Makes a POST request to the specified URL with the appropriate headers and data.
     Args:
         url (str): The URL to make the POST request to.
         data (str): The data to be sent in the POST request.

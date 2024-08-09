@@ -4,21 +4,23 @@ import './static/css/BuildPlaylistPage.css';
 import PlaylistForm from './PlaylistForm';
 
 const BuildPlaylist = () => {
+   //state hooks for managing top tracks, playlist tracks, current track details, and form visibility
   const [topTracks, setTopTracks] = useState([]);
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [currentTrackDetails, setCurrentTrackDetails] = useState({ video_id: '', info: '' });
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isPlaylistFormVisible, setIsPlaylistFormVisible] = useState(false);
 
   useEffect(() => {
-    // Fetch data from the Flask backend
     const fetchData = async () => {
       try {
+        //fetch top tracks and playlist tracks from the backend
         const response = await fetch('http://localhost:5000/topTracks', {
           credentials: 'include'
         }); 
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
 
+        //update state with fetched data
         setTopTracks(data.topTracks);
         setPlaylistTracks(data.playlistTracks);
         setCurrentTrackDetails(data.extra);
@@ -30,8 +32,10 @@ const BuildPlaylist = () => {
     fetchData();
   }, []);
 
+  //function to show song details when a song is clicked
   const showSongDetails = async (name, artist) => {
     try {
+      //fetch song details from the backend
       const response = await fetch('http://localhost:5000/getInfo', {
         method: 'POST',
         headers: {
@@ -42,6 +46,7 @@ const BuildPlaylist = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
+      //update the state with fetched data
       const trackDetails = await response.json();
       setCurrentTrackDetails(trackDetails)
     } catch (error) {
@@ -49,16 +54,20 @@ const BuildPlaylist = () => {
     }
   };
 
+  //function to show the playlist submission form 
   const showPopup = () => {
-    setIsModalVisible(true)
+    setIsPlaylistFormVisible(true)
   };
 
-  const handleModalClose = () => {
-    setIsModalVisible(false);
+  //function to handle closing the form
+  const handlePlaylistFormClose = () => {
+    setIsPlaylistFormVisible(false);
   };
 
+  //function to handle form submission
   const handleFormSubmit = async (playlistName) => {
     try {
+      //fetch response to see if playlist was created succesffuly 
       const response = await fetch('http://localhost:5000/create_playlist', {
         credentials: 'include',
         method: 'POST',
@@ -77,7 +86,7 @@ const BuildPlaylist = () => {
       console.error('Error creating playlist:', error);
       alert('An error occurred while creating the playlist.');
     } finally {
-      setIsModalVisible(false);
+      setIsPlaylistFormVisible(false);
     }
   };
 
@@ -139,8 +148,8 @@ const BuildPlaylist = () => {
         }
       </div>
       <PlaylistForm
-        isVisible={isModalVisible}
-        onClose={handleModalClose}
+        isVisible={isPlaylistFormVisible}
+        onClose={handlePlaylistFormClose}
         onSubmit={handleFormSubmit}
       />
     </div>

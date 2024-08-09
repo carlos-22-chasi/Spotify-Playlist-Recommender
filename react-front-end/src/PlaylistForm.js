@@ -4,31 +4,27 @@ import './static/css/PlaylistForm.css';
 const PlaylistForm = ({ isVisible, onClose, onSubmit }) => {
   const [playlistName, setPlaylistName] = useState('');
 
+  //handle form submission
   const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(playlistName);
-    setPlaylistName(''); // Reset the form
+    e.preventDefault(); //prevent default form submission behavior
+    onSubmit(playlistName); //call onSubmit prop with the playlist name
+    setPlaylistName(''); //reset the form
   };
-
+  //ff the form is not visible, render nothing
   if (!isVisible) {
     return null;
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="form-overlay">
+      <div className="form-content">
         <h2>Add Playlist</h2>
         <form onSubmit={handleSubmit}>
           <label>
             Playlist Name:
-            <input
-              type="text"
-              value={playlistName}
-              onChange={(e) => setPlaylistName(e.target.value)}
-              required
-            />
+            <input type="text" value={playlistName} onChange={(e) => setPlaylistName(e.target.value)} required/>
           </label>
-          <div className="modal-buttons">
+          <div className="form-buttons">
             <button type="submit">Submit</button>
             <button type="button" onClick={onClose}>
               Cancel

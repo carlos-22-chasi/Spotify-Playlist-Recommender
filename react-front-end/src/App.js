@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import WelcomePage from './WelcomePage';
 import LoginSuccess from './LoginSuccess';
-import BuildPlaylistPage from './BuildPlaylistPage'; // Ensure this component exists
+import BuildPlaylistPage from './BuildPlaylistPage';
 import './static/css/App.css';
 
 function App() {

@@ -1,10 +1,11 @@
 // src/WelcomePage.js
 import React from 'react';
 import './static/css/WelcomePage.css';
-import logo from './static/images/spotify-logo.jpg';
+import logo from './static/images/spotify-logo.jpg'; //import the spotify logo image
 
 const WelcomePage = () => {
   const handleLogin = () => {
+    //redirect user to the login route of the backend server
     window.location.href = 'http://localhost:5000/login';
   };
 
