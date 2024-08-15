@@ -10,11 +10,11 @@ const WelcomePage = () => {
   };
 
   return (
-    <div>
+    <div className='welcome-page'>
       <div className="logo-container">
         <img src={logo} alt="Spotify Logo" className="logo" />
       </div>
-      <div className="container">
+      <div className="content-container">
         <h1>Welcome to My Spotify App</h1>
         <button onClick={handleLogin} className="button button-login">Login with Spotify</button>
       </div>
