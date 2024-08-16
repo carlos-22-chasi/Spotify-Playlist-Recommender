@@ -29,7 +29,7 @@ const LoginSuccessPage = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="login-container">
       <h1>Login Successful</h1>
       <p>You have successfully logged in with Spotify.</p>
       <p>Currently loading in data ...</p>
