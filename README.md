@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# Overview
+This project consists of a Flask backend and a React frontend for creating and managing Spotify playlists. This project integrates with the Spotify, OpenAI, and YouTube APIs to create a suggested playlist based on the user's top 5 listened songs. It provides detailed descriptions from ChatGPT for each song and includes a YouTube video associated with it. Follow the instructions below to set up and run the application.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Project Structure 
+- Backend (Flask): Handles API requests, processes Spotify data, communicates with OpenAI and YouTube APIs.
+- Frontend (React): Provides the user interface, handles user authentication, and displays playlists and song details.
 
-## Available Scripts
+# Features
+- Spotify Integration: Fetches user's top 5 listened songs and creates a playlist based on those songs.
+- OpenAI Integration: Provides detailed song descriptions using ChatGPT.
+- YouTube Integration: Retrieves a YouTube video for each song.
+- React Router: Manages navigation between pages in the React frontend.
 
-In the project directory, you can run:
+# Prerequisites
+- Python 3.x
+- Node.js and npm
+- Virtualenv (for Python virtual environment)
 
-### `npm start`
+# Setup Instructions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Create a .env file with the following content 
+```bash
+SECRET_KEY=your_secret_key
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. SetUp the Backend
+   
+2.1 Navigate to the Backend Directory
+```bash 
+cd flask-backend
+```
+2.2 Create and Activate a Virtual Environment
+```bash 
+# Create the virtual environment
+python -m venv venv
 
-### `npm test`
+# Activate the virtual environment
+# On macOS/Linux
+source venv/bin/activate
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# On Windows
+.\venv\Scripts\activate
+```
+2.3 Install Python Dependencies
+```bash
+pip install -r requirements.txt
+```
+2.4 Run the Flask Development Server
+```bash
+python server.py
+```
+This will start the Flask backend server at http://127.0.0.1:5000/
 
-### `npm run build`
+3. Set Up the Front End
+   
+3.1 Navigate to the Frontend Directory
+In a seperate termial run 
+```bash
+cd react-front-end
+```
+3.2 Install Node.js Dependencies
+```bash
+npm install
+```
+3.3 Run the React Development Server
+```bash
+npm start
+```
+This will start the React development server at http://localhost:3000/
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The react server should automatically open the Welcome Page. In the Welcome Page it will ask for information in order to continue. Just fill in the form and you will be able to proceed with the application. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
