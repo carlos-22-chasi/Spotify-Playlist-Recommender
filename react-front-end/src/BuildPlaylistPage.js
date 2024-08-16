@@ -102,7 +102,7 @@ const BuildPlaylist = () => {
           {topTracks.map((track, index) => (
             <div className="song" key={index} onClick={() => showSongDetails(track.name, track.artist)}>
               <div className="rank">
-                <p className='song-text'>{index + 1}.</p>
+                <p>{index + 1}.</p>
               </div>
               <div className="title">
                 <p className='song-text'>{track.name} by {track.artist}</p>
@@ -113,12 +113,12 @@ const BuildPlaylist = () => {
             </div>
           ))}
         </div>
-        <p class="section-title">Created Suggested Playlist</p>
+        <p class="section-title">Recommended Playlist</p>
         <div className="new-playlist-songs">
           {playlistTracks.map((track, index) => (
             <div className="song" key={index} onClick={() => showSongDetails(track.name, track.artist)}>
               <div className="rank">
-                <p className='song-text'>{index + 1}.</p>
+                <p>{index + 1}.</p>
               </div>
               <div className="title">
                 <p className='song-text'>{track.name} by {track.artist}</p>

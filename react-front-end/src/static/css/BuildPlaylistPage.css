@@ -44,7 +44,6 @@ body {
   display: flex;
   flex-direction: column;
   background-color: rgb(10, 82, 216);
-
 }
 
 .song{
@@ -55,12 +54,12 @@ body {
   border-radius: 5px;
   padding: 5px;
   margin-bottom: 5px;
-
 }
 .song-text{
   color: white;
   font-family: 'Courier New', Courier, monospace;
   font-weight: 10;
+  font-size: 100%
 }
 .song:hover {
   background-color: #2ded70;
@@ -73,7 +72,6 @@ body {
     transform: scale(1.1);
     font-weight: bold;
     color: #2ded70;
-    overflow: auto;
 }
 
 .rank{
@@ -87,6 +85,12 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.rank p {
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 10;
+}
 .title{
   width: 60%;
   height: 100%;
@@ -96,7 +100,11 @@ body {
   align-items: center; 
   justify-content: center; 
   padding: 0 10px;
+  overflow: hidden;
+}
 
+.title p {
+  margin-right: 20%;
 }
 .albumCover{
   width: 20%;
