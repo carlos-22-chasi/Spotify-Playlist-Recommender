@@ -16,18 +16,33 @@ CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_cred
 load_dotenv()
 
 app.secret_key = os.getenv("SECRET_KEY")
-client_id = os.getenv("CLIENT_ID")
-client_secret = os.getenv("CLIENT_SECRET")
-redirect_uri = os.getenv("REDIRECT_URI")
 
-open_ai_key = os.getenv("OPEN_AI_KEY")
-youtube_key = os.getenv("YOUTUBE_KEY")
+credentials = {
+    "client_id": None,
+    "client_secret": None,
+    "redirect_uri": None,
+    "open_ai_key": None,
+    "youtube_key": None
+}
 
 AUTH_URL = 'https://accounts.spotify.com/authorize'
 TOKEN_URL = 'https://accounts.spotify.com/api/token'
 API_BASE_URL = 'https://api.spotify.com/v1/'
 
 
+@app.route('/set-credentials', methods=['POST'])
+def set_credentials():
+    global credentials
+    data = request.get_json()
+    
+    credentials["client_id"] = data.get('clientId')
+    credentials["client_secret"] = data.get('clientSecret')
+    credentials["redirect_uri"] = data.get('redirectUri')
+    credentials["open_ai_key"] = data.get('openAiKey')
+    credentials["youtube_key"] = data.get('youtubeKey')
+    
+    # Respond with success
+    return jsonify({"message": "Credentials set successfully!"})
 
 #--------------------------------------functions to login into spotify------------------------------------------------------------------------------------------#
 @app.route('/login')
@@ -37,10 +52,10 @@ def login():
     scope = 'user-read-private user-read-email user-read-recently-played playlist-modify-public user-top-read'
     #construct the authorization URL with the required parameters
     params = {
-        'client_id': client_id,
+        'client_id': credentials['client_id'],
         'response_type': 'code',
         'scope': scope,
-        'redirect_uri': redirect_uri,
+        'redirect_uri': credentials['redirect_uri'],
         # 'show_dialog': True  # comment out later if not needed
     }
     #generate the full authorization URL for Spotify
@@ -60,9 +75,9 @@ def callback():
         req_body = {
             'code': request.args['code'],
             'grant_type': 'authorization_code',
-            'redirect_uri': redirect_uri,
-            'client_id': client_id,
-            'client_secret': client_secret
+            'redirect_uri': credentials['redirect_uri'],
+            'client_id': credentials['client_id'],
+            'client_secret': credentials['client_secret']
         }
          #send a POST request to exchange the authorization code for an access token
         response = requests.post(TOKEN_URL, data=req_body)
@@ -117,8 +132,8 @@ def refresh_token():
     req_body = {
         'grant_type': 'refresh_token',
         'refresh_token': session['refresh_token'],
-        'client_id': client_id,
-        'client_secret': client_secret
+        'client_id': credentials['client_id'],
+        'client_secret': credentials['client_secret']
     }
     
     response = requests.post(TOKEN_URL, data=req_body)
@@ -175,8 +190,8 @@ def topTracks():
 
 def get_track_information(track):
     #create instances of AI and Youtube classes for information retrieval
-    ai = AI(open_ai_key)
-    youtube = Youtube(youtube_key)
+    ai = AI(credentials['open_ai_key'])
+    youtube = Youtube(credentials['youtube_key'])
 
     #get the video id of the song and chatgpt information of the song
     song = f"{track.artist} {track.name}"
@@ -200,30 +215,16 @@ def get_track_details():
     artist = data['artist'].strip()
     song = f"{name} by {artist}"
 
-    # Check if the song is already in session
-    # print("session[song]: ", session[song])
-
-    # if song in session:
-    #     print("song is saved in session")
-    #     return jsonify(session[song])
-    
-    # else:
-    #   print("song noy in session")
     #create instances of AI and Youtube classes for information retrieval
-    ai = AI(open_ai_key)
-    youtube = Youtube(youtube_key)
+    ai = AI(credentials['open_ai_key'])
+    youtube = Youtube(credentials['youtube_key'])
 
     #get the video id of the song and ChatGPT information of the song
     info = ai.generateSongInfo(song)
-    # info = info.replace('"', '').replace("'", "").replace(":", "")
     video_id = youtube.get_video_id(song)
 
     #create a dictionary containing the video ID and track information
     track_details = {'video_id': video_id, 'info': info}
-
-      # Store the track details in the session
-      # session[song] = track_details
-      # print("adding to session", session[song])
 
     return jsonify(track_details)
     
