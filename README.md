@@ -17,19 +17,24 @@ This project consists of a Flask backend and a React frontend for creating and m
 - Virtualenv (for Python virtual environment)
 
 # Setup Instructions
+1. 
+Clone the Repository
+```bash
+https://github.com/carlos-22-chasi/Spotify-Playlist-Recommender.git
+cd Spotify-Playlist-Recommender
+```
 
-1. Create a .env file with the following content 
+2. Create a .env file with the following content 
 ```bash
 SECRET_KEY=your_secret_key
 ```
-
-2. SetUp the Backend
+3. SetUp the Backend
    
-2.1 Navigate to the Backend Directory
+3.1 Navigate to the Backend Directory
 ```bash 
 cd flask-backend
 ```
-2.2 Create and Activate a Virtual Environment
+3.2 Create and Activate a Virtual Environment
 ```bash 
 # Create the virtual environment
 python -m venv venv
@@ -41,33 +46,38 @@ source venv/bin/activate
 # On Windows
 .\venv\Scripts\activate
 ```
-2.3 Install Python Dependencies
+3.3 Install Python Dependencies
 ```bash
 pip install -r requirements.txt
 ```
-2.4 Run the Flask Development Server
+3.4 Run the Flask Development Server
 ```bash
 python server.py
 ```
 This will start the Flask backend server at http://127.0.0.1:5000/
 
-3. Set Up the Front End
+4. Set Up the Front End
    
-3.1 Navigate to the Frontend Directory
+4.1 Navigate to the Frontend Directory
 In a seperate termial run 
 ```bash
 cd react-front-end
 ```
-3.2 Install Node.js Dependencies
+4.2 Install Node.js Dependencies
 ```bash
 npm install
 ```
-3.3 Run the React Development Server
+4.3 Run the React Development Server
 ```bash
 npm start
 ```
-This will start the React development server at http://localhost:3000/
+This will start the React development server at http://localhost:3000/ 
 
-The react server should automatically open the Welcome Page. In the Welcome Page it will ask for information in order to continue. Just fill in the form and you will be able to proceed with the application. 
+The react server should automatically open the Welcome Page. In the Welcome Page it will ask for information in order to continue. Just fill in the form and you will be able to proceed with the application. Once eveything is complete it should bring you to a webpage that looks like this: 
 
+![Webpage Design](react-front-end/public/final.png)
 
+# Usage
+
+- Display a Song's Video and Details: Click on any song to watch the music video associated with it from YouTube and read informtaion about the song fetched from OpenAI
+- Add Recommended Playlist to your account: Click on the "Add Playlist" button to add the song playlist to your account. It will prompt the user to add a name to the playlist and submit. This will add all the songs from the recommended playlist to your account under that playlist name. 
